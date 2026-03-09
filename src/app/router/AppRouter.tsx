@@ -20,6 +20,7 @@ import { AuditTrailPage } from "@/modules/audit/pages/AuditTrailPage";
 import { ReportingPage } from "@/modules/reporting/pages/ReportingPage";
 import { NotificationsPage } from "@/modules/notifications/pages/NotificationsPage";
 import { WorkflowAutomationPage } from "@/modules/workflow/pages/WorkflowAutomationPage";
+import { SystemConfigurationPage } from "@/modules/system-config/pages/SystemConfigurationPage";
 
 export function AppRouter() {
   return (
@@ -45,6 +46,7 @@ export function AppRouter() {
           <Route path="/reporting" element={<ReportingPage />} />
           <Route path="/notifications" element={<NotificationsPage />} />
           <Route path="/workflow-automation" element={<WorkflowAutomationPage />} />
+          <Route path="/system-configuration" element={<SystemConfigurationPage />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

@@ -59,6 +59,10 @@ class HttpClient {
     return this.request<T>(url, { method: "PUT", body });
   }
 
+  delete<T>(url: string): Promise<T> {
+    return this.request<T>(url, { method: "DELETE" });
+  }
+
   private isAuthEndpoint(url: string): boolean {
     return url.includes("/api/auth/login") || url.includes("/api/auth/refresh");
   }
@@ -107,4 +111,3 @@ class HttpClient {
 }
 
 export const httpClient = new HttpClient();
-

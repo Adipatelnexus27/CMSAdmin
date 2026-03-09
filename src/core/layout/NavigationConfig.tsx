@@ -15,6 +15,7 @@ import AssessmentRoundedIcon from "@mui/icons-material/AssessmentRounded";
 import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 import AutoModeRoundedIcon from "@mui/icons-material/AutoModeRounded";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
+import SettingsSuggestRoundedIcon from "@mui/icons-material/SettingsSuggestRounded";
 import { ReactNode } from "react";
 
 export interface NavItem {
@@ -40,6 +41,6 @@ export const navigationItems: NavItem[] = [
   { label: "Audit Trail", to: "/audit-trail", icon: <HistoryEduRoundedIcon /> },
   { label: "Reporting", to: "/reporting", icon: <AssessmentRoundedIcon /> },
   { label: "Notifications", to: "/notifications", icon: <NotificationsRoundedIcon /> },
-  { label: "Workflow Automation", to: "/workflow-automation", icon: <AutoModeRoundedIcon /> }
+  { label: "Workflow Automation", to: "/workflow-automation", icon: <AutoModeRoundedIcon /> },
+  { label: "System Configuration", to: "/system-configuration", icon: <SettingsSuggestRoundedIcon /> }
 ];
-
