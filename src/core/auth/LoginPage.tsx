@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
-import { Alert, Box, Button, Card, CardContent, Stack, TextField, Typography } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Alert, Box, Button, Card, CardContent, Link, Stack, TextField, Typography } from "@mui/material";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/core/auth/AuthContext";
 import { env } from "@/core/config/env";
 
@@ -11,8 +11,8 @@ interface LocationState {
 }
 
 export function LoginPage() {
-  const [email, setEmail] = useState("admin@cms.local");
-  const [password, setPassword] = useState("Password@123");
+  const [userNameOrEmail, setUserNameOrEmail] = useState("admin");
+  const [password, setPassword] = useState("Admin@123");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ export function LoginPage() {
     setError(null);
     setIsSubmitting(true);
     try {
-      await login(email, password);
+      await login(userNameOrEmail, password);
       navigate(from, { replace: true });
     } catch {
       setError("Invalid credentials.");
@@ -45,21 +45,21 @@ export function LoginPage() {
         p: 2
       }}
     >
-      <Card sx={{ width: "100%", maxWidth: 420 }}>
+      <Card sx={{ width: "100%", maxWidth: 460 }}>
         <CardContent>
           <Typography variant="h5" gutterBottom>
             {env.appName}
           </Typography>
           <Typography variant="body2" color="text.secondary" gutterBottom>
-            Sign in to access claim operations.
+            Sign in to continue.
           </Typography>
           <Box component="form" onSubmit={onSubmit} mt={2}>
             <Stack spacing={2}>
               {error ? <Alert severity="error">{error}</Alert> : null}
               <TextField
-                label="Email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
+                label="Username or Email"
+                value={userNameOrEmail}
+                onChange={(event) => setUserNameOrEmail(event.target.value)}
                 fullWidth
                 required
               />
@@ -74,6 +74,12 @@ export function LoginPage() {
               <Button type="submit" variant="contained" disabled={isSubmitting} fullWidth>
                 {isSubmitting ? "Signing in..." : "Sign in"}
               </Button>
+              <Typography variant="body2" color="text.secondary">
+                Need an account?{" "}
+                <Link component={RouterLink} to="/register">
+                  Register user
+                </Link>
+              </Typography>
             </Stack>
           </Box>
         </CardContent>

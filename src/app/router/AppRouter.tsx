@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthGuard } from "@/core/auth/AuthGuard";
 import { AppLayout } from "@/core/layout/AppLayout";
 import { LoginPage } from "@/core/auth/LoginPage";
+import { RegisterPage } from "@/core/auth/RegisterPage";
 import { DashboardPage } from "@/modules/dashboard/pages/DashboardPage";
 import { ClaimsListPage } from "@/modules/claims/pages/ClaimsListPage";
 import { ClaimRegistrationPage } from "@/modules/claims/pages/ClaimRegistrationPage";
@@ -24,6 +25,7 @@ export function AppRouter() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
       <Route element={<AuthGuard />}>
         <Route element={<AppLayout />}>
           <Route index element={<DashboardPage />} />
@@ -49,4 +51,3 @@ export function AppRouter() {
     </Routes>
   );
 }
-

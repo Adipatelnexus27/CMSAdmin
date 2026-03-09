@@ -35,9 +35,9 @@ export function AppLayout() {
             {env.appName}
           </Typography>
           <Typography variant="body2" sx={{ mr: 2 }}>
-            {user?.name}
+            {user?.displayName}
           </Typography>
-          <IconButton color="inherit" onClick={logout}>
+          <IconButton color="inherit" onClick={() => void logout()}>
             <LogoutRoundedIcon />
           </IconButton>
         </Toolbar>
@@ -83,4 +83,3 @@ export function AppLayout() {
     </Box>
   );
 }
-
