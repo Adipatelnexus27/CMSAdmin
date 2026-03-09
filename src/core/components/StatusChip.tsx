@@ -5,6 +5,14 @@ interface StatusChipProps {
 }
 
 const colorMap: Record<string, "default" | "success" | "warning" | "error" | "info"> = {
+  New: "info",
+  Triage: "warning",
+  "Coverage Review": "success",
+  "Liability Review": "success",
+  "Reserve Created": "warning",
+  "Fraud Check": "error",
+  Settlement: "info",
+  Payment: "success",
   Registered: "info",
   PolicyValidated: "success",
   Assigned: "info",

@@ -1,10 +1,19 @@
 export type ClaimStatus =
+  | "New"
+  | "Triage"
   | "Registered"
   | "PolicyValidated"
   | "Assigned"
+  | "Investigation"
   | "InvestigationInProgress"
+  | "Coverage Review"
+  | "Liability Review"
+  | "Reserve Created"
+  | "Fraud Check"
   | "CoverageAssessed"
   | "LiabilityAssessed"
+  | "Settlement"
+  | "Payment"
   | "Reserved"
   | "SettlementProposed"
   | "Paid"
@@ -26,4 +35,3 @@ export interface WorkItem {
   dueDate: string;
   status: string;
 }
-
