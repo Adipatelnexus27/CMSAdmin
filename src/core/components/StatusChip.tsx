@@ -9,6 +9,10 @@ const colorMap: Record<string, "default" | "success" | "warning" | "error" | "in
   PolicyValidated: "success",
   Assigned: "info",
   InvestigationInProgress: "warning",
+  CoverageDetermined: "success",
+  LiabilityDetermined: "success",
+  SettlementProcessed: "info",
+  PaymentCompleted: "success",
   CoverageAssessed: "success",
   LiabilityAssessed: "success",
   Reserved: "warning",
@@ -23,4 +27,3 @@ const colorMap: Record<string, "default" | "success" | "warning" | "error" | "in
 export function StatusChip({ status }: StatusChipProps) {
   return <Chip label={status} color={colorMap[status] ?? "default"} size="small" />;
 }
-

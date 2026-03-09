@@ -1,29 +1,45 @@
 import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 import { Alert, Button } from "@mui/material";
-import { useState } from "react";
-import { claimsApi } from "@/modules/claims/api/claimsApi";
+import { useCallback, useEffect, useState } from "react";
+import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
+import { Link as RouterLink } from "react-router-dom";
+import { ClaimListItem, claimsApi } from "@/modules/claims/api/claimsApi";
 import { EntityTable, TableColumn } from "@/core/components/EntityTable";
 import { PageContainer } from "@/core/components/PageContainer";
 import { PageHeader } from "@/core/components/PageHeader";
 import { StatusChip } from "@/core/components/StatusChip";
-import { ClaimSummary } from "@/core/types/domain";
-import { claimSummaries } from "@/modules/shared/mockData";
 
-const columns: TableColumn<ClaimSummary>[] = [
+const columns: TableColumn<ClaimListItem>[] = [
+  { key: "claimId", header: "Claim ID" },
   { key: "claimNumber", header: "Claim Number" },
   { key: "policyNumber", header: "Policy Number" },
   { key: "claimantName", header: "Claimant" },
-  { key: "lossDate", header: "Loss Date" },
-  { key: "status", header: "Status", render: (row) => <StatusChip status={row.status} /> },
-  { key: "reserveAmount", header: "Reserve", render: (row) => `$${row.reserveAmount.toLocaleString()}` }
+  { key: "lossDateUtc", header: "Loss Date", render: (row) => new Date(row.lossDateUtc).toLocaleDateString() },
+  { key: "statusName", header: "Status", render: (row) => <StatusChip status={row.statusName} /> },
+  { key: "estimatedLossAmount", header: "Est. Loss", render: (row) => `$${row.estimatedLossAmount.toLocaleString()}` },
+  {
+    key: "actions",
+    header: "Actions",
+    render: (row) => (
+      <Button
+        component={RouterLink}
+        to={`/claims/${row.claimId}`}
+        size="small"
+        startIcon={<VisibilityRoundedIcon />}
+        variant="text"
+      >
+        View
+      </Button>
+    )
+  }
 ];
 
 export function ClaimsListPage() {
-  const [rows, setRows] = useState<ClaimSummary[]>(claimSummaries);
+  const [rows, setRows] = useState<ClaimListItem[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const refreshFromApi = async () => {
+  const refreshFromApi = useCallback(async () => {
     setLoading(true);
     setMessage(null);
     try {
@@ -31,12 +47,16 @@ export function ClaimsListPage() {
       setRows(data);
       setMessage("Claims synced from backend API.");
     } catch {
-      setMessage("Backend not reachable. Showing local sample data.");
-      setRows(claimSummaries);
+      setMessage("Backend not reachable. No claim records available.");
+      setRows([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    void refreshFromApi();
+  }, [refreshFromApi]);
 
   return (
     <PageContainer>
@@ -50,8 +70,7 @@ export function ClaimsListPage() {
         }
       />
       {message ? <Alert severity="info">{message}</Alert> : null}
-      <EntityTable columns={columns} rows={rows} rowKey={(row) => row.claimNumber} />
+      <EntityTable columns={columns} rows={rows} rowKey={(row) => String(row.claimId)} />
     </PageContainer>
   );
 }
-

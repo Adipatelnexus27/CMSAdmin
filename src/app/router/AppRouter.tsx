@@ -6,6 +6,7 @@ import { RegisterPage } from "@/core/auth/RegisterPage";
 import { DashboardPage } from "@/modules/dashboard/pages/DashboardPage";
 import { ClaimsListPage } from "@/modules/claims/pages/ClaimsListPage";
 import { ClaimRegistrationPage } from "@/modules/claims/pages/ClaimRegistrationPage";
+import { ClaimDetailPage } from "@/modules/claims/pages/ClaimDetailPage";
 import { PolicyValidationPage } from "@/modules/policy/pages/PolicyValidationPage";
 import { ClaimAssignmentPage } from "@/modules/assignment/pages/ClaimAssignmentPage";
 import { ClaimInvestigationPage } from "@/modules/investigation/pages/ClaimInvestigationPage";
@@ -32,6 +33,7 @@ export function AppRouter() {
           <Route index element={<DashboardPage />} />
           <Route path="/claims" element={<ClaimsListPage />} />
           <Route path="/claims/register" element={<ClaimRegistrationPage />} />
+          <Route path="/claims/:id" element={<ClaimDetailPage />} />
           <Route path="/policy-validation" element={<PolicyValidationPage />} />
           <Route path="/claim-assignment" element={<ClaimAssignmentPage />} />
           <Route path="/claim-investigation" element={<ClaimInvestigationPage />} />

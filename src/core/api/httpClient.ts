@@ -16,16 +16,17 @@ class HttpClient {
 
   async request<T>(url: string, options: RequestOptions = {}): Promise<T> {
     const token = getAccessToken();
+    const isFormData = options.body instanceof FormData;
     const headers: Record<string, string> = {
-      "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
       ...options.headers
     };
 
     const response = await fetch(`${env.apiBaseUrl}${url}`, {
       method: options.method ?? "GET",
       headers,
-      body: options.body ? JSON.stringify(options.body) : undefined
+      body: options.body ? (isFormData ? (options.body as FormData) : JSON.stringify(options.body)) : undefined
     });
 
     if (response.status === 401 && options.retryOnUnauthorized !== false && !this.isAuthEndpoint(url)) {
