@@ -28,6 +28,8 @@ export function ClaimListPage() {
             <Button variant="outlined" onClick={() => navigate("/claims/triage")}>Triage & Assignment</Button>
             <Button variant="outlined" onClick={() => navigate("/investigations")}>Investigation Dashboard</Button>
             <Button variant="outlined" onClick={() => navigate("/fraud-review")}>Fraud Review</Button>
+            <Button variant="outlined" onClick={() => navigate("/reserves")}>Reserve Management</Button>
+            <Button variant="outlined" onClick={() => navigate("/reserves/approvals")}>Reserve Approvals</Button>
             <Button variant="contained" onClick={() => navigate("/claims/new")}>Create Claim</Button>
           </Stack>
         </Stack>
