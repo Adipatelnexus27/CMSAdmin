@@ -28,6 +28,7 @@ export function DashboardPage() {
 
         <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap>
           <Button variant="contained" onClick={() => navigate("/claims")}>Open Claims</Button>
+          <Button variant="contained" onClick={() => navigate("/claims/triage")}>Open Claim Triage</Button>
           <Button variant="contained" onClick={() => navigate("/configurations")}>Open System Configuration</Button>
           <Button variant="outlined" onClick={() => dispatch(logout())}>Logout</Button>
         </Stack>

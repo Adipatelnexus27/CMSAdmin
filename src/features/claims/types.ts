@@ -14,6 +14,10 @@ export interface ClaimSummary {
   policyNumber: string;
   claimType: string;
   claimStatus: string;
+  priority: number;
+  workflowStep: string;
+  investigatorUserId?: string | null;
+  adjusterUserId?: string | null;
   reporterName: string;
   incidentDateUtc: string;
   createdAtUtc: string;
@@ -40,6 +44,10 @@ export interface ClaimDetail {
   policyNumber: string;
   claimType: string;
   claimStatus: string;
+  priority: number;
+  workflowStep: string;
+  investigatorUserId?: string | null;
+  adjusterUserId?: string | null;
   reporterName: string;
   incidentDateUtc: string;
   incidentLocation: string;
@@ -47,6 +55,7 @@ export interface ClaimDetail {
   createdAtUtc: string;
   documents: ClaimDocument[];
   relatedClaims: RelatedClaim[];
+  workflowHistory: ClaimWorkflowHistory[];
 }
 
 export interface UploadClaimDocumentResponse {
@@ -55,4 +64,34 @@ export interface UploadClaimDocumentResponse {
   contentType: string;
   fileSizeBytes: number;
   uploadedAtUtc: string;
+}
+
+export interface ClaimWorkflowHistory {
+  claimWorkflowHistoryId: string;
+  claimId: string;
+  actionType: string;
+  previousValue?: string | null;
+  newValue: string;
+  changedByUserId?: string | null;
+  changedAtUtc: string;
+}
+
+export interface AssignInvestigatorRequest {
+  investigatorUserId: string;
+}
+
+export interface AssignAdjusterRequest {
+  adjusterUserId: string;
+}
+
+export interface SetClaimPriorityRequest {
+  priority: number;
+}
+
+export interface UpdateClaimStatusRequest {
+  claimStatus: string;
+}
+
+export interface UpdateWorkflowStepRequest {
+  workflowStep: string;
 }

@@ -1,4 +1,4 @@
-﻿import { Box, Button, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Button, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { claimApi } from "../api/claimApi";
@@ -24,7 +24,10 @@ export function ClaimListPage() {
       <Paper sx={{ p: 3 }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
           <Typography variant="h5" fontWeight={700}>Claim List</Typography>
-          <Button variant="contained" onClick={() => navigate("/claims/new")}>Create Claim</Button>
+          <Stack direction="row" spacing={1}>
+            <Button variant="outlined" onClick={() => navigate("/claims/triage")}>Triage & Assignment</Button>
+            <Button variant="contained" onClick={() => navigate("/claims/new")}>Create Claim</Button>
+          </Stack>
         </Stack>
 
         {error ? <Typography color="error">{error}</Typography> : null}
@@ -36,6 +39,10 @@ export function ClaimListPage() {
               <TableCell>Policy</TableCell>
               <TableCell>Type</TableCell>
               <TableCell>Status</TableCell>
+              <TableCell>Priority</TableCell>
+              <TableCell>Workflow Step</TableCell>
+              <TableCell>Investigator</TableCell>
+              <TableCell>Adjuster</TableCell>
               <TableCell>Reporter</TableCell>
               <TableCell>Incident Date</TableCell>
               <TableCell align="right">Actions</TableCell>
@@ -48,12 +55,21 @@ export function ClaimListPage() {
                 <TableCell>{claim.policyNumber}</TableCell>
                 <TableCell>{claim.claimType}</TableCell>
                 <TableCell>{claim.claimStatus}</TableCell>
+                <TableCell>{claim.priority}</TableCell>
+                <TableCell>{claim.workflowStep}</TableCell>
+                <TableCell>{claim.investigatorUserId ?? "-"}</TableCell>
+                <TableCell>{claim.adjusterUserId ?? "-"}</TableCell>
                 <TableCell>{claim.reporterName}</TableCell>
                 <TableCell>{new Date(claim.incidentDateUtc).toLocaleString()}</TableCell>
                 <TableCell align="right">
-                  <Button size="small" variant="outlined" onClick={() => navigate(`/claims/${claim.claimId}`)}>
-                    View
-                  </Button>
+                  <Stack direction="row" spacing={1} justifyContent="flex-end">
+                    <Button size="small" variant="outlined" onClick={() => navigate(`/claims/${claim.claimId}`)}>
+                      View
+                    </Button>
+                    <Button size="small" variant="contained" onClick={() => navigate(`/claims/triage?claimId=${claim.claimId}`)}>
+                      Triage
+                    </Button>
+                  </Stack>
                 </TableCell>
               </TableRow>
             ))}
