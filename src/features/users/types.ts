@@ -27,14 +27,10 @@ export interface ManagedUser {
 }
 
 export interface ApiUserRecord {
-  userId?: string;
-  id?: string;
-  email?: string;
-  fullName?: string;
-  name?: string;
-  roles?: string[];
-  role?: string;
+  userId: string;
+  email: string;
+  fullName: string;
+  roles: string[];
   isActive?: boolean;
   createdAtUtc?: string;
-  createdOnUtc?: string;
 }
