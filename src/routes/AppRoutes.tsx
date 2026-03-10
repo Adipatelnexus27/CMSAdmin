@@ -8,12 +8,14 @@ import { ClaimListPage } from "../features/claims/pages/ClaimListPage";
 import { ClaimTriagePage } from "../features/claims/pages/ClaimTriagePage";
 import { SystemConfigurationPage } from "../features/configuration/pages/SystemConfigurationPage";
 import { DocumentManagementPage } from "../features/documents/pages/DocumentManagementPage";
-import { FinanceDashboardPage } from "../features/finance/pages/FinanceDashboardPage";
+import { SettlementProcessingPage } from "../features/finance/pages/SettlementProcessingPage";
 import { FraudReviewDashboardPage } from "../features/fraud/pages/FraudReviewDashboardPage";
 import { InvestigationDashboardPage } from "../features/investigation/pages/InvestigationDashboardPage";
 import { ReserveApprovalPage } from "../features/reserve/pages/ReserveApprovalPage";
 import { ReserveManagementPage } from "../features/reserve/pages/ReserveManagementPage";
 import { ReportingAnalyticsPage } from "../features/reports/pages/ReportingAnalyticsPage";
+import { UserManagementPage } from "../features/users/pages/UserManagementPage";
+import { AdminLayout } from "../layouts/AdminLayout";
 
 export function AppRoutes() {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
@@ -21,22 +23,26 @@ export function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={isAuthenticated ? <Navigate to="/" replace /> : <LoginPage />} />
-      <Route path="/" element={isAuthenticated ? <DashboardPage /> : <Navigate to="/login" replace />} />
-      <Route path="/claims" element={isAuthenticated ? <ClaimListPage /> : <Navigate to="/login" replace />} />
-      <Route path="/claims/triage" element={isAuthenticated ? <ClaimTriagePage /> : <Navigate to="/login" replace />} />
-      <Route path="/claims/new" element={isAuthenticated ? <ClaimCreatePage /> : <Navigate to="/login" replace />} />
-      <Route path="/claims/:claimId" element={isAuthenticated ? <ClaimDetailPage /> : <Navigate to="/login" replace />} />
-      <Route path="/investigations" element={isAuthenticated ? <InvestigationDashboardPage /> : <Navigate to="/login" replace />} />
-      <Route path="/documents" element={isAuthenticated ? <DocumentManagementPage /> : <Navigate to="/login" replace />} />
-      <Route path="/finance" element={isAuthenticated ? <FinanceDashboardPage /> : <Navigate to="/login" replace />} />
-      <Route path="/fraud-review" element={isAuthenticated ? <FraudReviewDashboardPage /> : <Navigate to="/login" replace />} />
-      <Route path="/reserves" element={isAuthenticated ? <ReserveManagementPage /> : <Navigate to="/login" replace />} />
-      <Route path="/reserves/approvals" element={isAuthenticated ? <ReserveApprovalPage /> : <Navigate to="/login" replace />} />
-      <Route path="/reports" element={isAuthenticated ? <ReportingAnalyticsPage /> : <Navigate to="/login" replace />} />
-      <Route
-        path="/configurations"
-        element={isAuthenticated ? <SystemConfigurationPage /> : <Navigate to="/login" replace />}
-      />
+
+      <Route path="/" element={isAuthenticated ? <AdminLayout /> : <Navigate to="/login" replace />}>
+        <Route index element={<DashboardPage />} />
+        <Route path="claims" element={<ClaimListPage />} />
+        <Route path="claims/triage" element={<ClaimTriagePage />} />
+        <Route path="claims/new" element={<ClaimCreatePage />} />
+        <Route path="claims/:claimId" element={<ClaimDetailPage />} />
+        <Route path="investigations" element={<InvestigationDashboardPage />} />
+        <Route path="documents" element={<DocumentManagementPage />} />
+        <Route path="settlements" element={<SettlementProcessingPage />} />
+        <Route path="finance" element={<Navigate to="/settlements" replace />} />
+        <Route path="fraud-review" element={<FraudReviewDashboardPage />} />
+        <Route path="reserves" element={<ReserveManagementPage />} />
+        <Route path="reserves/approvals" element={<ReserveApprovalPage />} />
+        <Route path="reports" element={<ReportingAnalyticsPage />} />
+        <Route path="users" element={<UserManagementPage />} />
+        <Route path="system-configuration" element={<SystemConfigurationPage />} />
+        <Route path="configurations" element={<Navigate to="/system-configuration" replace />} />
+      </Route>
+
       <Route path="*" element={<Navigate to={isAuthenticated ? "/" : "/login"} replace />} />
     </Routes>
   );

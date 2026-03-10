@@ -241,7 +241,7 @@ export function FinanceDashboardPage() {
   return (
     <Box sx={{ p: 4 }}>
       <Paper sx={{ p: 3 }}>
-        <Typography variant="h5" fontWeight={700} sx={{ mb: 2 }}>Finance Dashboard</Typography>
+        <Typography variant="h5" fontWeight={700} sx={{ mb: 2 }}>Settlement Processing & Payments</Typography>
 
         {error ? <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert> : null}
         {success ? <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert> : null}

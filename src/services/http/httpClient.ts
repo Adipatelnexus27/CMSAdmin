@@ -1,91 +1,147 @@
-﻿function buildHeaders(includeContentType: boolean = true): HeadersInit {
+import axios, { AxiosRequestConfig, isAxiosError } from "axios";
+
+const httpClient = axios.create();
+
+httpClient.interceptors.request.use((config) => {
   const token = localStorage.getItem("cms_access_token");
-
-  const headers: Record<string, string> = {};
-  if (includeContentType) {
-    headers["Content-Type"] = "application/json";
-  }
-
   if (token) {
-    headers.Authorization = `Bearer ${token}`;
+    config.headers = config.headers ?? {};
+    config.headers.Authorization = `Bearer ${token}`;
   }
 
-  return headers;
+  return config;
+});
+
+async function readBlobErrorMessage(blob: Blob): Promise<string | null> {
+  try {
+    const text = await blob.text();
+    if (!text) {
+      return null;
+    }
+
+    try {
+      const parsed = JSON.parse(text) as { message?: string; title?: string; error?: string };
+      if (typeof parsed.message === "string" && parsed.message.trim()) {
+        return parsed.message;
+      }
+
+      if (typeof parsed.title === "string" && parsed.title.trim()) {
+        return parsed.title;
+      }
+
+      if (typeof parsed.error === "string" && parsed.error.trim()) {
+        return parsed.error;
+      }
+
+      return text;
+    } catch {
+      return text;
+    }
+  } catch {
+    return null;
+  }
 }
 
-async function parseResponse<TResponse>(response: Response): Promise<TResponse> {
-  if (response.status === 204) {
-    return undefined as TResponse;
+async function toErrorMessage(error: unknown): Promise<string> {
+  if (!isAxiosError(error)) {
+    return error instanceof Error ? error.message : "Request failed.";
   }
 
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    const message = typeof data?.message === "string" ? data.message : "Request failed.";
-    throw new Error(message);
+  const data = error.response?.data;
+
+  if (typeof data === "string" && data.trim()) {
+    return data;
   }
 
-  return data as TResponse;
+  if (typeof Blob !== "undefined" && data instanceof Blob) {
+    const blobMessage = await readBlobErrorMessage(data);
+    if (blobMessage) {
+      return blobMessage;
+    }
+  }
+
+  if (data && typeof data === "object") {
+    const typed = data as { message?: string; title?: string; error?: string };
+    if (typeof typed.message === "string" && typed.message.trim()) {
+      return typed.message;
+    }
+
+    if (typeof typed.title === "string" && typed.title.trim()) {
+      return typed.title;
+    }
+
+    if (typeof typed.error === "string" && typed.error.trim()) {
+      return typed.error;
+    }
+  }
+
+  if (typeof error.message === "string" && error.message.trim()) {
+    return error.message;
+  }
+
+  return "Request failed.";
 }
 
-export async function getJson<TResponse>(url: string): Promise<TResponse> {
-  const response = await fetch(url, {
+async function requestJson<TResponse>(config: AxiosRequestConfig): Promise<TResponse> {
+  try {
+    const response = await httpClient.request<TResponse>(config);
+    return response.data as TResponse;
+  } catch (error) {
+    throw new Error(await toErrorMessage(error));
+  }
+}
+
+export function getJson<TResponse>(url: string): Promise<TResponse> {
+  return requestJson<TResponse>({
     method: "GET",
-    headers: buildHeaders()
+    url
   });
-
-  return parseResponse<TResponse>(response);
 }
 
-export async function postJson<TResponse, TRequest>(url: string, payload: TRequest): Promise<TResponse> {
-  const response = await fetch(url, {
+export function postJson<TResponse, TRequest>(url: string, payload: TRequest): Promise<TResponse> {
+  return requestJson<TResponse>({
     method: "POST",
-    headers: buildHeaders(),
-    body: JSON.stringify(payload)
+    url,
+    data: payload
   });
-
-  return parseResponse<TResponse>(response);
 }
 
-export async function putJson<TResponse, TRequest>(url: string, payload: TRequest): Promise<TResponse> {
-  const response = await fetch(url, {
+export function putJson<TResponse, TRequest>(url: string, payload: TRequest): Promise<TResponse> {
+  return requestJson<TResponse>({
     method: "PUT",
-    headers: buildHeaders(),
-    body: JSON.stringify(payload)
+    url,
+    data: payload
   });
-
-  return parseResponse<TResponse>(response);
 }
 
 export async function deleteJson(url: string): Promise<void> {
-  const response = await fetch(url, {
+  await requestJson<void>({
     method: "DELETE",
-    headers: buildHeaders()
+    url
   });
-
-  await parseResponse<void>(response);
 }
 
-export async function uploadMultipart<TResponse>(url: string, formData: FormData): Promise<TResponse> {
-  const response = await fetch(url, {
+export function uploadMultipart<TResponse>(url: string, formData: FormData): Promise<TResponse> {
+  return requestJson<TResponse>({
     method: "POST",
-    headers: buildHeaders(false),
-    body: formData
+    url,
+    data: formData,
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
   });
-
-  return parseResponse<TResponse>(response);
 }
 
 export async function getBlob(url: string): Promise<Blob> {
-  const response = await fetch(url, {
-    method: "GET",
-    headers: buildHeaders(false)
-  });
+  try {
+    const response = await httpClient.request<Blob>({
+      method: "GET",
+      url,
+      responseType: "blob"
+    });
 
-  if (!response.ok) {
-    const data = await response.json().catch(() => ({}));
-    const message = typeof data?.message === "string" ? data.message : "Request failed.";
-    throw new Error(message);
+    return response.data;
+  } catch (error) {
+    throw new Error(await toErrorMessage(error));
   }
-
-  return response.blob();
 }
