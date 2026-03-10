@@ -2,6 +2,7 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { logUserAction } from "../../audit/services/auditTrailClient";
 import { loginUser } from "../store/authSlice";
 
 export function LoginPage() {
@@ -16,6 +17,11 @@ export function LoginPage() {
     event.preventDefault();
     const result = await dispatch(loginUser({ email, password }));
     if (loginUser.fulfilled.match(result)) {
+      await logUserAction("Login", {
+        description: "User login completed successfully.",
+        entityName: "Auth",
+        requestPath: "/login"
+      });
       navigate("/");
     }
   };

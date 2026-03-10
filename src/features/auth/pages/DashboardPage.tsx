@@ -24,6 +24,11 @@ const DASHBOARD_MODULES = [
     description: "Calculate settlements, manage approvals, and track payment statuses."
   },
   {
+    title: "Audit Trail",
+    path: "/audit-trail",
+    description: "Monitor user actions, claim changes, and API activity with exportable reports."
+  },
+  {
     title: "Reports",
     path: "/reports",
     description: "Analyze claims and export operational and finance reports."

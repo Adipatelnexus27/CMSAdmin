@@ -1,8 +1,9 @@
 import { AppBar, Box, Button, Chip, Divider, Drawer, List, ListItemButton, ListItemText, Stack, Toolbar, Typography } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { logout } from "../features/auth/store/authSlice";
+import { logUserAction } from "../features/audit/services/auditTrailClient";
 import { ADMIN_NAV_ITEMS, AdminNavItem } from "./adminNavItems";
 
 const drawerWidth = 260;
@@ -21,10 +22,24 @@ export function AdminLayout() {
   const location = useLocation();
   const auth = useAppSelector((state) => state.auth);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const previousPathRef = useRef<string | null>(null);
 
   const selectedNavPath = useMemo(() => {
     const active = ADMIN_NAV_ITEMS.find((item) => isNavItemActive(item, location.pathname));
     return active?.path;
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (previousPathRef.current === location.pathname) {
+      return;
+    }
+
+    previousPathRef.current = location.pathname;
+    void logUserAction("Navigation", {
+      description: `Navigated to ${location.pathname}`,
+      entityName: "AdminPanel",
+      requestPath: location.pathname
+    });
   }, [location.pathname]);
 
   const drawerContent = (
@@ -44,6 +59,11 @@ export function AdminLayout() {
             key={item.path}
             selected={selectedNavPath === item.path}
             onClick={() => {
+              void logUserAction("Navigation", {
+                description: `Opened ${item.label}`,
+                entityName: "AdminPanel",
+                requestPath: item.path
+              });
               navigate(item.path);
               setMobileOpen(false);
             }}
@@ -99,7 +119,17 @@ export function AdminLayout() {
             </Stack>
           </Box>
 
-          <Button variant="outlined" onClick={() => dispatch(logout())}>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              void logUserAction("Logout", {
+                description: "User initiated logout from admin console.",
+                entityName: "Auth",
+                requestPath: location.pathname
+              });
+              dispatch(logout());
+            }}
+          >
             Logout
           </Button>
         </Toolbar>

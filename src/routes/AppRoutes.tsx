@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useAppSelector } from "../app/hooks";
+import { AuditDashboardPage } from "../features/audit/pages/AuditDashboardPage";
 import { DashboardPage } from "../features/auth/pages/DashboardPage";
 import { LoginPage } from "../features/auth/pages/LoginPage";
 import { ClaimCreatePage } from "../features/claims/pages/ClaimCreatePage";
@@ -35,6 +36,7 @@ export function AppRoutes() {
         <Route path="settlements" element={<SettlementProcessingPage />} />
         <Route path="finance" element={<Navigate to="/settlements" replace />} />
         <Route path="fraud-review" element={<FraudReviewDashboardPage />} />
+        <Route path="audit-trail" element={<AuditDashboardPage />} />
         <Route path="reserves" element={<ReserveManagementPage />} />
         <Route path="reserves/approvals" element={<ReserveApprovalPage />} />
         <Route path="reports" element={<ReportingAnalyticsPage />} />
