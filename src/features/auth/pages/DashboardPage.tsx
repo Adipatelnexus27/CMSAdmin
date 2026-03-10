@@ -1,9 +1,11 @@
 ﻿import { Box, Button, Chip, Stack, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { logout } from "../store/authSlice";
 
 export function DashboardPage() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const auth = useAppSelector((state) => state.auth);
 
   return (
@@ -24,9 +26,14 @@ export function DashboardPage() {
           ))}
         </Stack>
 
-        <Button variant="outlined" onClick={() => dispatch(logout())} sx={{ width: "fit-content" }}>
-          Logout
-        </Button>
+        <Stack direction="row" spacing={2}>
+          <Button variant="contained" onClick={() => navigate("/configurations")}>
+            Open System Configuration
+          </Button>
+          <Button variant="outlined" onClick={() => dispatch(logout())} sx={{ width: "fit-content" }}>
+            Logout
+          </Button>
+        </Stack>
       </Stack>
     </Box>
   );
