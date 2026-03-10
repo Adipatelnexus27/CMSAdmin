@@ -1,4 +1,4 @@
-﻿import { Box, Button, Chip, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { logout } from "../store/authSlice";
@@ -29,6 +29,7 @@ export function DashboardPage() {
         <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap>
           <Button variant="contained" onClick={() => navigate("/claims")}>Open Claims</Button>
           <Button variant="contained" onClick={() => navigate("/claims/triage")}>Open Claim Triage</Button>
+          <Button variant="contained" onClick={() => navigate("/investigations")}>Open Investigation Dashboard</Button>
           <Button variant="contained" onClick={() => navigate("/configurations")}>Open System Configuration</Button>
           <Button variant="outlined" onClick={() => dispatch(logout())}>Logout</Button>
         </Stack>

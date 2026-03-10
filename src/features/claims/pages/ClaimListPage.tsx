@@ -26,6 +26,7 @@ export function ClaimListPage() {
           <Typography variant="h5" fontWeight={700}>Claim List</Typography>
           <Stack direction="row" spacing={1}>
             <Button variant="outlined" onClick={() => navigate("/claims/triage")}>Triage & Assignment</Button>
+            <Button variant="outlined" onClick={() => navigate("/investigations")}>Investigation Dashboard</Button>
             <Button variant="contained" onClick={() => navigate("/claims/new")}>Create Claim</Button>
           </Stack>
         </Stack>

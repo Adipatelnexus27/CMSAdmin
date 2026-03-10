@@ -21,12 +21,14 @@ export interface ClaimSummary {
   reporterName: string;
   incidentDateUtc: string;
   createdAtUtc: string;
+  investigationProgress: number;
 }
 
 export interface ClaimDocument {
   claimDocumentId: string;
   claimId: string;
   originalFileName: string;
+  documentCategory: string;
   contentType: string;
   fileSizeBytes: number;
   uploadedAtUtc: string;
@@ -53,14 +55,17 @@ export interface ClaimDetail {
   incidentLocation: string;
   incidentDescription: string;
   createdAtUtc: string;
+  investigationProgress: number;
   documents: ClaimDocument[];
   relatedClaims: RelatedClaim[];
   workflowHistory: ClaimWorkflowHistory[];
+  investigationNotes: InvestigationNote[];
 }
 
 export interface UploadClaimDocumentResponse {
   claimDocumentId: string;
   originalFileName: string;
+  documentCategory: string;
   contentType: string;
   fileSizeBytes: number;
   uploadedAtUtc: string;
@@ -94,4 +99,31 @@ export interface UpdateClaimStatusRequest {
 
 export interface UpdateWorkflowStepRequest {
   workflowStep: string;
+}
+
+export interface ClaimInvestigation {
+  claimId: string;
+  claimNumber: string;
+  claimStatus: string;
+  investigationProgress: number;
+  documents: ClaimDocument[];
+  notes: InvestigationNote[];
+}
+
+export interface InvestigationNote {
+  claimInvestigationNoteId: string;
+  claimId: string;
+  noteText: string;
+  progressPercentSnapshot?: number | null;
+  createdByUserId?: string | null;
+  createdAtUtc: string;
+}
+
+export interface AddInvestigatorNoteRequest {
+  noteText: string;
+  progressPercentSnapshot?: number | null;
+}
+
+export interface UpdateInvestigationProgressRequest {
+  progressPercent: number;
 }
