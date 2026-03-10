@@ -13,6 +13,7 @@ import { FraudReviewDashboardPage } from "../features/fraud/pages/FraudReviewDas
 import { InvestigationDashboardPage } from "../features/investigation/pages/InvestigationDashboardPage";
 import { ReserveApprovalPage } from "../features/reserve/pages/ReserveApprovalPage";
 import { ReserveManagementPage } from "../features/reserve/pages/ReserveManagementPage";
+import { ReportingAnalyticsPage } from "../features/reports/pages/ReportingAnalyticsPage";
 
 export function AppRoutes() {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
@@ -31,6 +32,7 @@ export function AppRoutes() {
       <Route path="/fraud-review" element={isAuthenticated ? <FraudReviewDashboardPage /> : <Navigate to="/login" replace />} />
       <Route path="/reserves" element={isAuthenticated ? <ReserveManagementPage /> : <Navigate to="/login" replace />} />
       <Route path="/reserves/approvals" element={isAuthenticated ? <ReserveApprovalPage /> : <Navigate to="/login" replace />} />
+      <Route path="/reports" element={isAuthenticated ? <ReportingAnalyticsPage /> : <Navigate to="/login" replace />} />
       <Route
         path="/configurations"
         element={isAuthenticated ? <SystemConfigurationPage /> : <Navigate to="/login" replace />}
