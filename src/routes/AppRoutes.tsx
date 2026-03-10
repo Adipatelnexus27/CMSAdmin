@@ -7,6 +7,7 @@ import { ClaimDetailPage } from "../features/claims/pages/ClaimDetailPage";
 import { ClaimListPage } from "../features/claims/pages/ClaimListPage";
 import { ClaimTriagePage } from "../features/claims/pages/ClaimTriagePage";
 import { SystemConfigurationPage } from "../features/configuration/pages/SystemConfigurationPage";
+import { DocumentManagementPage } from "../features/documents/pages/DocumentManagementPage";
 import { FinanceDashboardPage } from "../features/finance/pages/FinanceDashboardPage";
 import { FraudReviewDashboardPage } from "../features/fraud/pages/FraudReviewDashboardPage";
 import { InvestigationDashboardPage } from "../features/investigation/pages/InvestigationDashboardPage";
@@ -25,6 +26,7 @@ export function AppRoutes() {
       <Route path="/claims/new" element={isAuthenticated ? <ClaimCreatePage /> : <Navigate to="/login" replace />} />
       <Route path="/claims/:claimId" element={isAuthenticated ? <ClaimDetailPage /> : <Navigate to="/login" replace />} />
       <Route path="/investigations" element={isAuthenticated ? <InvestigationDashboardPage /> : <Navigate to="/login" replace />} />
+      <Route path="/documents" element={isAuthenticated ? <DocumentManagementPage /> : <Navigate to="/login" replace />} />
       <Route path="/finance" element={isAuthenticated ? <FinanceDashboardPage /> : <Navigate to="/login" replace />} />
       <Route path="/fraud-review" element={isAuthenticated ? <FraudReviewDashboardPage /> : <Navigate to="/login" replace />} />
       <Route path="/reserves" element={isAuthenticated ? <ReserveManagementPage /> : <Navigate to="/login" replace />} />

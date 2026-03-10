@@ -30,6 +30,7 @@ export function DashboardPage() {
           <Button variant="contained" onClick={() => navigate("/claims")}>Open Claims</Button>
           <Button variant="contained" onClick={() => navigate("/claims/triage")}>Open Claim Triage</Button>
           <Button variant="contained" onClick={() => navigate("/investigations")}>Open Investigation Dashboard</Button>
+          <Button variant="contained" onClick={() => navigate("/documents")}>Open Document Management</Button>
           <Button variant="contained" onClick={() => navigate("/finance")}>Open Finance Dashboard</Button>
           <Button variant="contained" onClick={() => navigate("/fraud-review")}>Open Fraud Review</Button>
           <Button variant="contained" onClick={() => navigate("/reserves")}>Open Reserve Management</Button>

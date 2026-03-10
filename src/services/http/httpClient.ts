@@ -74,3 +74,18 @@ export async function uploadMultipart<TResponse>(url: string, formData: FormData
 
   return parseResponse<TResponse>(response);
 }
+
+export async function getBlob(url: string): Promise<Blob> {
+  const response = await fetch(url, {
+    method: "GET",
+    headers: buildHeaders(false)
+  });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    const message = typeof data?.message === "string" ? data.message : "Request failed.";
+    throw new Error(message);
+  }
+
+  return response.blob();
+}
