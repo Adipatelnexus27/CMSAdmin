@@ -1,16 +1,16 @@
-﻿function buildHeaders(): HeadersInit {
+﻿function buildHeaders(includeContentType: boolean = true): HeadersInit {
   const token = localStorage.getItem("cms_access_token");
 
-  if (!token) {
-    return {
-      "Content-Type": "application/json"
-    };
+  const headers: Record<string, string> = {};
+  if (includeContentType) {
+    headers["Content-Type"] = "application/json";
   }
 
-  return {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`
-  };
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  return headers;
 }
 
 async function parseResponse<TResponse>(response: Response): Promise<TResponse> {
@@ -63,4 +63,14 @@ export async function deleteJson(url: string): Promise<void> {
   });
 
   await parseResponse<void>(response);
+}
+
+export async function uploadMultipart<TResponse>(url: string, formData: FormData): Promise<TResponse> {
+  const response = await fetch(url, {
+    method: "POST",
+    headers: buildHeaders(false),
+    body: formData
+  });
+
+  return parseResponse<TResponse>(response);
 }

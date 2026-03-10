@@ -26,13 +26,10 @@ export function DashboardPage() {
           ))}
         </Stack>
 
-        <Stack direction="row" spacing={2}>
-          <Button variant="contained" onClick={() => navigate("/configurations")}>
-            Open System Configuration
-          </Button>
-          <Button variant="outlined" onClick={() => dispatch(logout())} sx={{ width: "fit-content" }}>
-            Logout
-          </Button>
+        <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap>
+          <Button variant="contained" onClick={() => navigate("/claims")}>Open Claims</Button>
+          <Button variant="contained" onClick={() => navigate("/configurations")}>Open System Configuration</Button>
+          <Button variant="outlined" onClick={() => dispatch(logout())}>Logout</Button>
         </Stack>
       </Stack>
     </Box>

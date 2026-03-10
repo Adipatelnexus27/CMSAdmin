@@ -2,6 +2,9 @@
 import { useAppSelector } from "../app/hooks";
 import { DashboardPage } from "../features/auth/pages/DashboardPage";
 import { LoginPage } from "../features/auth/pages/LoginPage";
+import { ClaimCreatePage } from "../features/claims/pages/ClaimCreatePage";
+import { ClaimDetailPage } from "../features/claims/pages/ClaimDetailPage";
+import { ClaimListPage } from "../features/claims/pages/ClaimListPage";
 import { SystemConfigurationPage } from "../features/configuration/pages/SystemConfigurationPage";
 
 export function AppRoutes() {
@@ -11,6 +14,9 @@ export function AppRoutes() {
     <Routes>
       <Route path="/login" element={isAuthenticated ? <Navigate to="/" replace /> : <LoginPage />} />
       <Route path="/" element={isAuthenticated ? <DashboardPage /> : <Navigate to="/login" replace />} />
+      <Route path="/claims" element={isAuthenticated ? <ClaimListPage /> : <Navigate to="/login" replace />} />
+      <Route path="/claims/new" element={isAuthenticated ? <ClaimCreatePage /> : <Navigate to="/login" replace />} />
+      <Route path="/claims/:claimId" element={isAuthenticated ? <ClaimDetailPage /> : <Navigate to="/login" replace />} />
       <Route
         path="/configurations"
         element={isAuthenticated ? <SystemConfigurationPage /> : <Navigate to="/login" replace />}
